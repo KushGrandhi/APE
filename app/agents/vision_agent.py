@@ -1,6 +1,8 @@
 from agno.agent import Agent
 from agno.models.ollama import Ollama
 
+from app.models import VisionReport
+
 vision_agent = Agent(
     name="Vision Agent",
     role="Analyze camera images of the dock to identify boxes, containers, and hazard symbols",
@@ -8,8 +10,8 @@ vision_agent = Agent(
     instructions=[
         "You are the vision specialist for a chemical warehouse dock.",
         "You will receive a description of what is visible at the dock from the camera feed.",
-        "Report all visible containers, their labels, quantities, and any hazard symbols detected.",
-        "Pay special attention to hazardous material symbols: Flammable, Corrosive, Toxic, Oxidizer, etc.",
+        "For each container report: description, quantity, and hazard symbols with confidence.",
+        "Flag any unmarked or suspicious items separately.",
     ],
-    markdown=True,
+    output_schema=VisionReport,
 )

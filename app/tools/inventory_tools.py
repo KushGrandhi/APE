@@ -1,4 +1,6 @@
-"""Tool for looking up expected inventory by time slot."""
+"""Inventory lookup tool — mock implementation."""
+
+from app.tools.base import InventorySource
 
 # Mock schedule database
 SCHEDULE = {
@@ -10,23 +12,29 @@ SCHEDULE = {
 }
 
 
+class MockInventorySource(InventorySource):
+    """Returns expected inventory from a hardcoded schedule."""
+
+    def __init__(self, schedule: dict[str, str] | None = None):
+        self.schedule = schedule or SCHEDULE
+
+    def get_expectation(self, time: str) -> str:
+        if time in self.schedule:
+            return f"Expected at {time}: {self.schedule[time]}"
+        available = sorted(self.schedule.keys())
+        closest = None
+        for slot in available:
+            if slot <= time:
+                closest = slot
+        if closest:
+            return f"No exact schedule for {time}. Closest earlier slot ({closest}): {self.schedule[closest]}"
+        return f"No shipment scheduled at or before {time}."
+
+
+# Default instance used by the orchestrator
+_default = MockInventorySource()
+
+
 def inventory_expectation(time: str) -> str:
-    """Look up what inventory shipment is expected at the dock for a given time slot.
-
-    Args:
-        time: The time slot to check, e.g. "14:00".
-
-    Returns:
-        A description of the expected shipment for that time slot.
-    """
-    if time in SCHEDULE:
-        return f"Expected at {time}: {SCHEDULE[time]}"
-    # Find the closest earlier time slot
-    available = sorted(SCHEDULE.keys())
-    closest = None
-    for slot in available:
-        if slot <= time:
-            closest = slot
-    if closest:
-        return f"No exact schedule for {time}. Closest earlier slot ({closest}): {SCHEDULE[closest]}"
-    return f"No shipment scheduled at or before {time}."
+    """Look up what inventory shipment is expected at the dock for a given time slot."""
+    return _default.get_expectation(time)

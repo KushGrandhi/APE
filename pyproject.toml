@@ -9,6 +9,10 @@ dependencies = [
     "pydantic",
 ]
 
+[project.optional-dependencies]
+camera = ["opencv-python"]
+audio = ["openai-whisper", "pyaudio"]
+
 [build-system]
 requires = ["setuptools>=68.0"]
 build-backend = "setuptools.backends._legacy:_Backend"

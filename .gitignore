@@ -21,3 +21,5 @@ venv/
 
 # Environment variables
 .env
+
+.env.example

@@ -14,4 +14,5 @@ vision_agent = Agent(
         "Flag any unmarked or suspicious items separately.",
     ],
     output_schema=VisionReport,
+    debug_mode=True,
 )

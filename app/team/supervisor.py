@@ -22,6 +22,7 @@ preliminary_agent = Agent(
     ],
     output_schema=PreliminaryReport,
     markdown=True,
+    debug_mode=True,
 )
 
 # Stage 2: Incorporate human gesture, produce final report
@@ -47,4 +48,5 @@ final_agent = Agent(
     ],
     output_schema=DockInspectionReport,
     markdown=True,
+    debug_mode=True,
 )

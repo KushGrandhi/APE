@@ -13,4 +13,5 @@ inventory_agent = Agent(
         "Extract each item with its quantity, container type, and hazard classifications.",
     ],
     output_schema=InventoryReport,
+    debug_mode=True,
 )

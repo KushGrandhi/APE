@@ -12,6 +12,7 @@ dependencies = [
 [project.optional-dependencies]
 camera = ["opencv-python"]
 audio = ["openai-whisper", "pyaudio"]
+dashboard = ["streamlit"]
 
 [build-system]
 requires = ["setuptools>=68.0"]

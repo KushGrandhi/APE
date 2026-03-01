@@ -25,7 +25,7 @@ st.set_page_config(page_title="Dock Inspection", layout="wide")
 # Fixed config
 # ---------------------------------------------------------------------------
 time_slot = "14:00"
-vision_source = os.getenv("VISION_IMAGE_DIR", "dock_cam_01.jpg")
+vision_source = os.getenv("VISION_IMAGE_DIR", "/Users/kush/Pictures/screenshots/test.png")
 audio_source = "mic"
 gesture_source = os.getenv("GESTURE_CAMERA_URL", "0")
 
@@ -72,17 +72,18 @@ col1, col2 = st.columns(2)
 with col1:
     st.markdown("### Vision Agent")
     with st.container(border=True):
+        st.markdown("**Input**")
+        if Path(vision_source).is_file():
+            st.image(vision_source, use_container_width=True)
+        else:
+            st.caption(f"`{vision_source}`")
         if st.session_state.vision_input is not None:
-            st.markdown("**Input** — Raw sensor data")
-            st.text(st.session_state.vision_input)
             st.divider()
             st.markdown("**Output** — Agent analysis")
             try:
                 st.json(json.loads(st.session_state.vision_output))
             except (json.JSONDecodeError, TypeError):
                 st.code(st.session_state.vision_output or "", language="json")
-        else:
-            st.caption("Waiting for inspection...")
 
 with col2:
     st.markdown("### Audio Agent")

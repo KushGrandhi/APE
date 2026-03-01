@@ -14,5 +14,4 @@ gesture_agent = Agent(
         "Provide a confidence score between 0.0 and 1.0.",
     ],
     output_schema=GestureReport,
-    debug_mode=True,
 )

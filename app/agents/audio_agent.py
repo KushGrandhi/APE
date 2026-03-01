@@ -14,5 +14,4 @@ audio_agent = Agent(
         "Include the raw transcription in your output.",
     ],
     output_schema=AudioReport,
-    debug_mode=True,
 )

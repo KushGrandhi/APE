@@ -74,15 +74,21 @@ class MockVisionSource(VisionSource):
 # ---------------------------------------------------------------------------
 
 class ImageDirVisionSource(VisionSource):
-    """Processes all images in a directory through the vision model."""
+    """Processes a single image file or all images in a directory through the vision model."""
 
     def observe(self, source: str) -> str:
-        dir_path = Path(source)
-        if not dir_path.is_dir():
-            return f"Error: '{source}' is not a directory."
+        src_path = Path(source)
+
+        # Single file
+        if src_path.is_file() and src_path.suffix.lower() in IMAGE_EXTENSIONS:
+            return _describe_image(str(src_path))
+
+        # Directory
+        if not src_path.is_dir():
+            return f"Error: '{source}' is not a file or directory."
 
         image_files = sorted(
-            f for f in dir_path.iterdir()
+            f for f in src_path.iterdir()
             if f.suffix.lower() in IMAGE_EXTENSIONS
         )
         if not image_files:

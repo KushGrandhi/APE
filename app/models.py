@@ -51,16 +51,32 @@ class GestureReport(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Final supervisor output
+# Supervisor outputs — two stages
 # ---------------------------------------------------------------------------
 
-class DockInspectionReport(BaseModel):
+class PreliminaryReport(BaseModel):
+    """Stage 1: Supervisor compares expected vs received before human confirmation."""
     timestamp: str
     expected_inventory: str
     voice_instruction: str
     boxes_seen: list[ReceivedBox]
-    human_gesture: str       # "approve" | "review" | "decline"
     match_status: str        # "match" | "mismatch" | "partial_match"
     discrepancies: list[str]
-    confidence_summary: str  # summary of confidence levels across agents
+    confidence_summary: str
+    recommended_action: str  # "approve" | "needs_review" | "reject"
+
+
+class DockInspectionReport(BaseModel):
+    """Stage 2: Final report after human gesture confirmation."""
+    timestamp: str
+    expected_inventory: str
+    voice_instruction: str
+    boxes_seen: list[ReceivedBox]
+    match_status: str        # "match" | "mismatch" | "partial_match"
+    discrepancies: list[str]
+    confidence_summary: str
+    recommended_action: str  # what the system recommended before human input
+    human_gesture: str       # "approve" | "review" | "decline"
     final_decision: str      # "approved" | "needs_review" | "rejected"
+    priority: str            # "critical" | "high" | "medium" | "low"
+    priority_reason: str     # why this priority was assigned
